@@ -1,0 +1,105 @@
+/* Tournament Card Styling */
+.tournament-card {
+	color: white;
+	opacity: 0.8;
+}
+
+.tournament-card a,
+.tournament-card h2,
+.tournament-card h3,
+.tournament-card p,
+.tournament-card li {
+	color: white;
+}
+
+.tournament-card .card-title {
+	font-weight: bold;
+}
+
+.tournament-card ul {
+	list-style: none;
+	padding: 0;
+}
+
+.tournament-card li {
+	margin-bottom: 8px;
+}
+
+#tournament-presentation {
+	font-size: 60px;
+	font-weight: bolder;
+	margin-top: 175px;
+	opacity: 0.5;
+}
+
+/* TEST */
+#player-count-p {
+	color: white;
+	text-align: center;
+	font-size: 24px;
+	font-weight: bolder;
+	opacity: 0.6;
+	margin-top: 100px;
+}
+
+#tournament-player-count {
+	font-size:24px;
+	color:white;
+	padding:10px;
+	width:80px;
+	border-radius: 20px;
+	background: rgba(128, 128, 128, 0.3);
+	backdrop-filter: blur(10px);
+	border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+#players-input-list {
+	margin: 20px 0;
+}
+
+#players-input-list input {
+	border: 1px solid rgba(255, 255, 255, 0.3);
+	background: rgba(200, 200, 200, 0.1);
+	backdrop-filter: blur(10px);
+	color: #fff; /* White text */
+	border-radius: 20px; /* Rounded corners */
+	font-size:18px;
+	padding:15px;
+}
+
+#player-n-list {
+	color: #fff;
+	font-size: 24px;
+	opacity: 0.6;
+	font-weight: bolder;
+}
+
+#card-title-p-aliases {
+	margin-top: 0;
+	text-align: center;
+	font-size: 48px;
+	color: rgba(255, 255, 255, 0.8);
+}
+
+#tournament-players-ingame li {
+	text-align:center;
+	color: #fff;
+	font-size: 36px;
+	opacity: 0.9x;
+	padding: 5px;
+	font-weight: bolder;
+}
+
+#current-game-info {
+	margin-top:70px;
+	color: #fff;
+	font-size: 24px;
+	opacity: 1;
+	font-weight: bolder;
+	text-align: center;
+}
+
+.tournament-card ul {
+	padding: 0;
+	margin-top: 90px;
+}

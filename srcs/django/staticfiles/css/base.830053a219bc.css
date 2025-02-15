@@ -1,0 +1,708 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Initially no transitions */
+.no-transitions .adaptive-card,
+.no-transitions .score-card,
+.no-transitions .game-card,
+.no-transitions canvas {
+    transition: none !important;
+}
+
+/* After we add transitions-enabled class, transitions are applied */
+.transitions-enabled .adaptive-card,
+.transitions-enabled .score-card,
+.transitions-enabled canvas,
+.transitions-enabled .game-card {
+    transition: left 0.5s ease, top 0.5s ease, transform 0.5s ease;
+}
+
+.outer-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scaling-wrapper {
+  aspect-ratio: 16/9;
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  background: #000;
+  position: relative;
+  overflow: hidden;
+}
+
+/* This sets the reference size (1920x1080) */
+.base-container {
+  position: relative;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0; /* Top-left corner as scale origin */
+}
+
+.centered-layout .game-card {
+  left: 27%;
+}
+
+.centered-layout canvas {
+  left: 27%;
+}
+
+.centered-layout .score-card {
+  left: 27%;
+}
+
+.game-card, .score-card, canvas {
+  transition: left 0.5s ease, top 0.5s ease, transform 0.5s ease;
+}
+
+.bg-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* Title */
+.title {
+  position: absolute;
+  left: 50px;
+  top: 50px;
+  font-size: 48px;
+  margin: 0;
+  color: #fff;
+  text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Navbar */
+.navbar {
+  position: absolute;
+  left: 75px;
+  top: 140px;
+  width: 80px;
+  height: 800px;
+  position: relative;
+}
+
+.nav-btn {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(128, 128, 128, 0.3);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.3);
+  transition: background 0.3s ease;
+}
+
+.nav-btn:hover {
+  background: rgba(135,206,250,0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-btn.active {
+  background: #0A84FF;
+  border: none;
+  box-shadow: 0px 0px 20px #0A84FF;
+}
+
+.nav-btn img {
+  width: 40px;
+  height: 40px;
+}
+
+.profile { top: 0px; left: 0px; }
+.messages { top: 110px; left: 0px; }
+.players { top: 220px; left: 0px; }
+.tournament { top: 330px; left: 0px; }
+.languages { top: 610px; left: 0px; }
+.themes { top: 720px; left: 0px; }
+
+.adaptive-card, .score-card, .game-card, canvas {
+  backdrop-filter: blur(50px);
+  border: 1px solid rgba(255,255,255,0.4);
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(180,180,180,0.3));
+}
+
+/* Adaptive Card */
+.adaptive-card {
+  position: absolute;
+  left: 215px;
+  top: 140px;
+  width: 620px;
+  height: 800px;
+  border-radius: 70px;
+  overflow: hidden;
+  box-sizing: border-box;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Modify the hidden state to ensure no flicker */
+.adaptive-card.hidden {
+  display: none; /* Instant hide with no animation */
+}
+
+.adaptive-content {
+  height: 100%;
+  overflow-y: auto;
+  padding-top: 100px; 
+  box-sizing: border-box;
+  position: relative;
+  overflow-y: auto;
+
+  /* Masking for fade effect (unchanged) */
+  -webkit-mask-image: linear-gradient(to bottom, 
+                                      transparent 0%, 
+                                      black 10%, 
+                                      black 90%, 
+                                      transparent 100%);
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+
+  mask-image: linear-gradient(to bottom, 
+                              transparent 0%, 
+                              black 10%, 
+                              black 90%, 
+                              transparent 100%);
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+
+  /* Hide scrollbars */
+  /* For Firefox */
+  scrollbar-width: none;
+}
+
+/* For Chrome, Safari, and other WebKit browsers */
+.adaptive-content::-webkit-scrollbar {
+  display: none;
+}
+
+.close-btn, .settings-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border: none;
+  z-index: 2;
+}
+
+.close-btn {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+}
+
+.close-btn:hover, .settings-btn:hover {
+  background: rgba(135,206,250,0.3);
+  box-shadow: none;
+}
+
+.close-btn img {
+  width: 20px;
+  height: 20px;
+}
+
+.settings-btn img {
+  transition: transform 0.3s ease;
+  width: 30px;
+  height: 30px;
+}
+
+.settings-btn.rotated img {
+  transform: rotate(90deg);
+}
+
+.settings-btn.rotated {
+  background-color: #0A84FF;
+  box-shadow: 0px 0px 20px #0A84FF;
+}
+
+.card-title {
+  text-align: center;
+  font-size: 48px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+/* Themes Grid */
+.themes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+  align-items: start;
+  gap: 70px 30px;
+  margin-top: 50px;
+  padding: 0 50px 40px 50px;
+  box-sizing: border-box;
+}
+
+.theme-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  text-align: center;
+}
+
+.theme-option img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease;
+}
+
+.theme-option span {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: normal;
+  color: #fff;
+  transition: transform 0.3s ease;
+}
+
+.theme-option:hover img,
+.theme-option:hover span {
+  transform: scale(1.1);
+}
+
+.theme-option.selected img {
+  transform: scale(1.2);
+  box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(221, 221, 221, 0.341);
+  border-radius: 100px;
+}
+
+.theme-option.selected span {
+  transform: scale(1.2);
+  font-weight: bold;
+  color: #fff;
+  margin-top: 30px;
+}
+
+/* Score Card */
+.score-card {
+  position: absolute;
+  left: 895px;
+  top: 140px;
+  width: 950px;
+  height: 120px;
+  border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.settings-btn {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.player-pic-container {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.3);
+  background: rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 100px;
+  margin-left: 130px;
+}
+
+.player-pic-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.score-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 100px;
+  color: #fff;
+  font-size: 48px;
+  font-weight: bold;
+  text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.5);
+}
+
+.opponent {
+  margin-left: auto;
+}
+
+.game-card, canvas {
+  position: absolute;
+  left: 895px;
+  top: 320px;
+  width: 950px;
+  height: 620px;
+  border-radius: 70px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(180,180,180,0.3));
+}
+
+/* Profile, Game (Game Mode), and Languages Cards */
+.profile-card-content,
+.languages-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px 40px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.game-mode-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 40px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.profile-card-content .card-title,
+.game-mode-content .card-title,
+.languages-card-content .card-title {
+  margin-bottom: 60px;
+}
+
+.profile-card-content .profile-pic-container {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.2);
+  margin-bottom: 30px;
+}
+.profile-card-content .profile-pic-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-card-content .profile-info {
+  margin-bottom: 40px;
+}
+.profile-card-content .profile-name {
+  font-size: 36px;
+  color: #fff;
+  margin: 0;
+  text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.3);
+}
+
+.profile-card-content .profile-handle {
+  font-size: 20px;
+  color: #eee;
+  margin: 5px 0 0;
+}
+
+.profile-card-content .logout-btn {
+  background: rgba(255,255,255,0.3);
+  border: none;
+  border-radius: 15px;
+  padding: 15px 40px;
+  font-size: 20px;
+  color: #fff;
+  text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.profile-card-content .logout-btn:hover {
+  background: rgba(255,255,255,0.5);
+}
+
+/* Game Mode Card */
+.game-mode-content .game-mode-option {
+  cursor: pointer;
+  width: 60%;
+  background: rgba(255,255,255,0.2);
+  border-radius: 40px;
+  display: flex;
+  align-items: center;
+  padding: 20px 30px;
+  margin-bottom: 30px;
+  box-sizing: border-box;
+  transition: background 0.2s;
+}
+
+.game-mode-content .game-mode-option:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+.game-mode-content .option-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  overflow: hidden;
+  margin-right: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.game-mode-content .option-icon img {
+  width: 120%;
+  height: 120%;
+  object-fit: cover;
+}
+
+.game-mode-content .option-text {
+  flex: 1;
+  text-align: left;
+}
+.game-mode-content .option-text h3 {
+  margin: 0;
+  font-size: 24px;
+  color: #fff;
+  text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+}
+.game-mode-content .option-text p {
+  margin: 5px 0 0;
+  font-size: 16px;
+  color: #fff;
+}
+
+.game-mode-content .option-arrow {
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  background: rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 20px;
+  flex-shrink: 0;
+}
+.game-mode-content .option-arrow img {
+  width: 20px;
+  height: 20px;
+}
+
+/* Languages Card */
+.languages-card-content .language-option {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+  transition: transform 0.3s ease;
+}
+
+.languages-card-content .language-option img {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 5px;
+}
+
+.languages-card-content .language-option img,
+.languages-card-content .language-option p {
+  transition: transform 0.3s ease;
+}
+
+.languages-card-content .language-option p {
+  color: #fff;
+  font-size: 18px;
+}
+
+.languages-card-content .language-option:hover img,
+.languages-card-content .language-option:hover p {
+  transform: scale(1.1);
+}
+
+.languages-card-content .language-option.selected img {
+  transform: scale(1.2);
+  box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(221, 221, 221, 0.341);
+  border-radius: 100px;
+  margin-bottom: 20px;
+}
+
+.languages-card-content .language-option.selected p {
+  transform: scale(1.2);
+  font-weight: bold;
+  color: #fff;
+  margin-top: 20px;
+}
+
+/* Exit buttons centered when settings active */
+.exit-buttons {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  gap: 70px;
+}
+
+.exit-btn {
+  background: rgba(255,255,255,0.3);
+  border: none;
+  border-radius: 20px;
+  padding: 15px 40px;
+  font-size: 20px;
+  color: #fff;
+  text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.5);
+}
+
+.exit-btn:hover {
+  background: rgba(255,255,255,0.5);
+}
+
+/* Disabled state */
+.exit-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: rgba(255,255,255,0.2);
+}
+
+/* Show exit buttons, hide player pics and score when settings active */
+.score-card.settings-active .exit-buttons {
+  display: flex;
+}
+
+.score-card.settings-active .player-pic-container,
+.score-card.settings-active .score-display {
+  display: none;
+}
+
+.victory-screen {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px; /* match your base-container */
+  height: 1080px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+}
+
+.hidden {
+  display: none;
+}
+
+.winner-pic {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+.winner-msg {
+  color: #fff;
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+#back-to-menu-btn {
+  background-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-size: 24px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* Welcome Section Styling */
+/* #welcome-section {
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  text-align: center;
+  color: #fff;
+} */
+
+.title-w {
+  position: absolute;
+  left: 50px;
+  top: 50px;
+  font-size: 48px;
+  margin: 0;
+  color: #fff;
+  text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.5);
+}
+
+.welcome-text {
+  font-size: 96px;
+  margin-top: 20px;
+  color: #fff;
+  font-weight: bold;
+  position: absolute;
+  top: 40%;
+  left: 30%;
+  text-align: center;
+}
+
+/* Styling for the button */
+#auth-btns button {
+  border: 1px solid rgba(255,255,255,0.4);
+  background: rgba(128, 128, 128, 0.3);
+  backdrop-filter: blur(10px);
+  color: #fff; /* White text */
+  border-radius: 20px; /* Rounded corners */
+  padding: 30px 60px; /* Padding inside the button */
+  font-size: 24px; /* Font size */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Smooth background-color transition */
+  top: 60%;
+  left: 45%;
+  position: absolute;
+}
+
+#auth-btns button:hover {
+  background: #0A84FF;
+  border: none;
+  box-shadow: 0px 0px 20px #0A84FF;
+}
+
+#auth-btns button:active {
+  background: #0A84FF;
+  border: none;
+}
